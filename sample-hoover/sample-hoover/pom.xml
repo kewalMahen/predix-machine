@@ -1,0 +1,112 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.ge.dspmicro</groupId>
+		<artifactId>sample-apps</artifactId>
+		<version>16.3.1</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<artifactId>sample-hoover</artifactId>
+	<packaging>bundle</packaging>
+	<version>${dspmicro.sample-apps.version}</version>
+	<name>Predix Machine Hoover Service Sample</name>
+
+	<dependencies>
+
+		<!-- OSGi -->
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.core</artifactId>
+			<version>${org.osgi.core.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.compendium</artifactId>
+			<version>${org.osgi.compendium.version}</version>
+			<scope>provided</scope>
+		</dependency>	
+				
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${org.slf4j.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+        <!-- Predix Machine -->	
+        <dependency>
+            <groupId>com.ge.dspmicro</groupId>
+            <artifactId>hoover-api</artifactId>
+            <version>${dspmicro.version}</version>
+            <scope>compile</scope>
+        </dependency> 
+        <dependency>
+            <groupId>com.ge.dspmicro</groupId>
+            <artifactId>device-common</artifactId>
+            <version>${dspmicro.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ge.dspmicro</groupId>
+            <artifactId>machinegateway-impl</artifactId>
+            <version>${dspmicro.version}</version>
+            <scope>compile</scope>
+        </dependency>               
+        <dependency>
+            <groupId>com.ge.dspmicro</groupId>
+            <artifactId>securityadmin</artifactId>
+            <version>${dspmicro.version}</version>
+        </dependency>
+        
+		<!-- DS Annotation Dependency -->
+        <dependency>
+            <groupId>biz.aQute.bnd</groupId>
+            <artifactId>biz.aQute.bndlib</artifactId>
+            <version>${biz.aQute.bndlib.version}</version>
+            <scope>compile</scope>
+        </dependency>
+		
+		<!--  Rabbit MQ dependency -->
+		<dependency>
+		  <groupId>com.rabbitmq</groupId>
+		  <artifactId>amqp-client</artifactId>
+		  <version>3.4.3</version>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
+						<Import-Package>
+                            org.osgi.framework;version=${import.org.osgi.framework},
+                            org.osgi.service.component;version=${import.org.osgi.service.component},
+                            org.osgi.service.cm;version=${import.org.osgi.service.cm},
+                            org.slf4j;version=${import.org.slf4j}; provider=paxlogging,
+							com.ge.dspmicro.hoover.api.spillway;version=${import.com.ge.dspmicro.hoover.api},
+                            com.ge.dspmicro.hoover.api.processor;version=${import.com.ge.dspmicro.hoover.api},
+                            com.ge.dspmicro.security.admin.api;version=${import.com.ge.dspmicro.security.admin.api},
+                            com.ge.dspmicro.machinegateway.types;version=${import.com.ge.dspmicro.machinegateway.types}
+						</Import-Package>
+						<Export-Package>
+						</Export-Package>
+						<Embed-Dependency>
+                            amqp-client
+                        </Embed-Dependency>
+						<Service-Component>*</Service-Component>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
